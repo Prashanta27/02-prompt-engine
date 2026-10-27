@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "asux-prompt-engine"
+version = "1.0.0"
+description = "Production-oriented Prompt Engine V1 for the AsuX AI Workforce platform."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+authors = [{ name = "AsuX AI Engineering" }]
+keywords = ["llm", "prompt", "engine", "asux"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Typing :: Typed",
+]
+dependencies = [
+  "pydantic>=2.6,<3.0",
+  "jinja2>=3.1,<4.0",
+  "pyyaml>=6.0,<7.0",
+  "asux-llm-gateway"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+  "mypy>=1.10",
+  "types-pyyaml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/asux_prompt_engine"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests", "src"]
+addopts = "-ra --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F", "I", "B", "UP", "N", "S", "BLE", "A", "C4", "SIM", "PT", "T20", "RUF"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+"examples/**" = ["T201"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+packages = ["asux_prompt_engine"]
+plugins = ["pydantic.mypy"]
+warn_unreachable = true
